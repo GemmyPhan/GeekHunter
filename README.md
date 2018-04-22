@@ -1,4 +1,4 @@
-# GeekHunter
+# GeekHunters
 Geek Registration System
 GeekHunter project from Gemmy Phan has been done. 
 Using GRS a recruitment agent should be able to:
