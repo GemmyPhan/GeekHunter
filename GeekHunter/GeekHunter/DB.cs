@@ -12,8 +12,10 @@ namespace GeekHunter
 {
     class DB
     {
+        // Data source address
         static string connectionString = @"Data Source = C:\Users\user\source\repos\GeekHunter\GeekHunter\GeekHunter\GeekHunter.sqlite;Version=3;";
 
+        // Load all the Candidates with Id, FirstName & LastName from Candidate table
         public static List<Candidate> LoadAllCandidates()
         {
             SQLiteConnection conn;
@@ -48,6 +50,7 @@ namespace GeekHunter
             return candidatesList;
         }
 
+        // Load all the Skills with Id, Name from Skill table
         public static List<Skills> LoadAllSkills()
         {
 
@@ -80,14 +83,19 @@ namespace GeekHunter
             finally { conn.Close(); }
             return skillsList;
         }
-
-
+ 
+        /// <summary>
+        /// Create a new Candidate with Skills
+        /// </summary>
+        /// <param name="fName"></param>
+        /// <param name="lName"></param>
+        /// <param name="skillIds"></param>
+        /// <returns></returns>
         public int addCandidate_Skill(string fName, string lName, List<int> skillIds)
         {
             int candidateId;
             candidateId = LoadAllCandidates().Max(c => c.Id) + 1;
 
-            // 
             AddCandidate(candidateId, fName, lName);
 
             foreach (int skillId in skillIds)
@@ -97,6 +105,7 @@ namespace GeekHunter
             return candidateId;
         }
 
+        // Insert Id, FirstName & LastName into Candidate table
         private void AddCandidate(int id, string fName, string lName)
         {
             string query;
@@ -105,6 +114,7 @@ namespace GeekHunter
             ExecuteNonQuery(query);
         }
 
+        // Insert CandidateId & SkillId into Candidate_Skill table
         private void AddCandidateSkills(int Candidateid, int SkillId)
         {
             string query;
@@ -141,87 +151,63 @@ namespace GeekHunter
             try
             {
                 conn.Open();
-                
 
-                string sql = $"SELECT FirstName, LastName FROM Candidate WHERE Id = {id} ";
-                //where cs.SkillId in (1,2,3)
+                string sql = $"SELECT FirstName, LastName FROM Candidate WHERE Id = {id} ";            
 
                 SQLiteCommand cmd = new SQLiteCommand(sql, conn);
                 SQLiteDataReader reader = cmd.ExecuteReader();
-                //int id;
+                
                 string fname;
                 string lname;
-                //string sname;
+                
                 while (reader.Read())
-                {
-                    //id = reader.GetInt32(0);
+                {                  
                     fname = reader.GetString(0);
                     lname = reader.GetString(1);
-                    //sname = reader.GetString(3);
-                    //Candidate candidate = new Candidate();
-                    //candidate.Id = id;
+                    
                     candidate.FirstName = fname;
                     candidate.LastName = lname;          
                 }
-
             }
             catch (System.Exception e) { MessageBox.Show(e.ToString()); }
             finally { conn.Close(); }
             return candidate;
         }
 
+        //Get 1 Candidate with Skills by Id
         public static List<Skills> GetOneCandidateSkill(int id)
         {
-            //
             SQLiteConnection conn;
             conn = new SQLiteConnection(connectionString);
-            //Candidate candidate = new Candidate();
-            //List<Candidate> candidatesList = new List<Candidate>();
+         
             List<Skills> skills = new List<Skills>();
             try
             {
                 conn.Open();
 
-
                 string sql = $"SELECT SkillId FROM Candidate_Skill WHERE CandidateId = {id} ";
-                //string sql = $"SELECT s.Name FROM Candidate_Skill cs INNER JOIN Skill s ON s.Id = cs.SkillId WHERE cs.CustomerId = {id} ";
-                //where cs.SkillId in (1,2,3)
 
                 SQLiteCommand cmd = new SQLiteCommand(sql, conn);
                 SQLiteDataReader reader = cmd.ExecuteReader();
                 int sid;
-                //string sname;
 
                 while (reader.Read())
                 {
                     sid = reader.GetInt32(0);
-                    //MessageBox.Show(sid.ToString());
-                    //fname = reader.GetString(0);
-                    //lname = reader.GetString(1);
-                    //sname = reader.GetString(0);
 
-                    //<SkillIds>.add(sid;
                     Skills skill = new Skills();
                     skill.Id = sid;
                     skills.Add(skill);
-                   
-
-                    //
-                    //candidate.FirstName = fname;
-                    //candidate.LastName = lname;
                 }
-                
-
             }
             catch (System.Exception e) { MessageBox.Show(e.ToString()); }
             finally { conn.Close(); }
             return skills;
         }
 
-        //public static List<Candidate> SearchCandidateSkills(List<int> skillIds)
+        //Search all candidates
         public static List<Candidate> SearchCandidate()
         {
-            //
             SQLiteConnection conn;
             conn = new SQLiteConnection(connectionString);
 
@@ -229,23 +215,8 @@ namespace GeekHunter
             try
             {
                 conn.Open();
-                //MyClass[] myArray = list.ToArray();
-
-                //Khai bao chuoi sA="";
-                //String sA = "";
-                //for (listObj.cout) sA = "1,2,3";
-
-                //for (int i = 0; i < skillIds.Count; i++)
-                //{
-                //    sA = skillIds[i].ToString();
-                //    sA = string.Join(",", sA);
-                //    MessageBox.Show(sA);
-                //}
-
-                //select Id, FirstName, LastName from Candidate c inner join Candidate_Skill ck on c.id = ck.Candidate_id where ck.SkillId in (" + sA + ");
 
                 string sql = "SELECT c.Id, c.FirstName, c.LastName, s.Name FROM Candidate c INNER JOIN Candidate_Skill cs ON c.id = cs.CandidateId INNER JOIN Skill s ON s.Id = cs.SkillId ";
-                //where cs.SkillId in (1,2,3)
 
                 SQLiteCommand cmd = new SQLiteCommand(sql, conn);
                 SQLiteDataReader reader = cmd.ExecuteReader();
@@ -273,9 +244,9 @@ namespace GeekHunter
             return candidatesList;
         }
 
+        // Select technologies candidate has experience in from the predefined list
         public static List<Candidate> SearchCandidateSkills(List<int> skillIds)
         {
-            //
             SQLiteConnection conn;
             conn = new SQLiteConnection(connectionString);
 
@@ -283,11 +254,7 @@ namespace GeekHunter
             try
             {
                 conn.Open();
-                //MyClass[] myArray = list.ToArray();
-
-                //Khai bao chuoi sA="";
                 String sCondition = "";
-                //for (listObj.cout) sA = "1,2,3";
 
                 int iSkillCount = skillIds.Count;
 
@@ -301,11 +268,8 @@ namespace GeekHunter
                     {
                         sCondition = sCondition + skillIds[i].ToString() + ",";
                     }
-
-
                 }
               
-
                 string sql = "SELECT c.Id, c.FirstName, c.LastName, s.Name " +
                      "FROM (SELECT LST1.CandidateId FROM (SELECT COUNT(*) CNT, cs1.CandidateId FROM Candidate_Skill cs1 " +
                         "WHERE cs1.SkillId IN (" + sCondition + ") " +
@@ -339,10 +303,9 @@ namespace GeekHunter
             return candidatesList;
         }
 
-        //Update Candidate_Skill
+        //Update Candidate details & their Skills at the same time
         public void updateCandidate_Skill(int canId, string fName, string lName, List<int> skillIds)
         {    
-            // 
             UpdateCandidate(canId, fName, lName);
             DeleteCandidateSkills(canId);
             foreach (int skillId in skillIds)
@@ -363,7 +326,6 @@ namespace GeekHunter
             string query;
             query = $"DELETE FROM Candidate_Skill WHERE CandidateId={canId}";
             ExecuteNonQuery(query);
-
         }
        
         private void UpdateCandidateSkills(int canId, int SkillId)
@@ -372,71 +334,10 @@ namespace GeekHunter
             query = $"INSERT INTO Candidate_Skill(CandidateId, SkillId) VALUES({canId}, {SkillId})";
             ExecuteNonQuery(query);
         }
-
-
-
-        //public static void updateCandidate(Candidate candidate)
-        //{
-
-        //    SQLiteConnection conn;
-        //    conn = new SQLiteConnection(connectionString);
-        //    try
-        //    {
-        //        conn.Open();
-        //        string id = candidate.Id.ToString();
-        //        string sql = "update Candidate set FirstName=@FirstName, LastName=@LastName where id=@id";
-        //        SQLiteCommand cmd = new SQLiteCommand(sql, conn);
-        //        string fname = candidate.FirstName;
-        //        string lname = candidate.LastName;
-        //        cmd.Parameters.AddWithValue("id", candidate.Id);
-        //        cmd.Parameters.AddWithValue("FirstName", fname);
-        //        cmd.Parameters.AddWithValue("LastName", lname);
-        //        cmd.ExecuteNonQuery();
-        //        cmd.Parameters.Clear();
-
-        //    }
-        //    catch (System.Exception e) { MessageBox.Show(e.ToString()); }
-
-        //    finally { conn.Close(); }
-
-        //}
-
-        //public static void updateCandidateSkill(int id)
-        //{
-
-        //    SQLiteConnection conn;
-        //    conn = new SQLiteConnection(connectionString);
-        //    try
-        //    {
-        //        conn.Open();
-        //        string Id = id.ToString();
-        //        string sql = "delete from Candidate_Skill where CandidateId=@id";
-
-        //        SQLiteCommand cmd = new SQLiteCommand(sql, conn);
-
-
-        //        cmd.Parameters.AddWithValue("id", id);
-        //        cmd.ExecuteNonQuery();
-        //        cmd.Parameters.Clear();
-
-        //        string sql2 = "INSERT INTO Candidate_Skill from Candidate where Id=@id";
-        //        SQLiteCommand cmd2 = new SQLiteCommand(sql2, conn);
-        //        cmd2.Parameters.AddWithValue("id", id);
-        //        cmd2.ExecuteNonQuery();
-        //        cmd2.Parameters.Clear();
-
-        //    }
-        //    catch (System.Exception e) { MessageBox.Show(e.ToString()); }
-
-        //    finally
-        //    {
-        //        conn.Close();
-        //    }
-        //}
-
+        
+        // Delete a Candidate
         public static void deleteCandidate(int id)
         {
-
             SQLiteConnection conn;
             conn = new SQLiteConnection(connectionString);
             try
@@ -445,8 +346,7 @@ namespace GeekHunter
                 string Id = id.ToString();
                 string sql = "delete from Candidate_Skill where CandidateId=@id";
                 
-                SQLiteCommand cmd = new SQLiteCommand(sql, conn);
-               
+                SQLiteCommand cmd = new SQLiteCommand(sql, conn);             
 
                 cmd.Parameters.AddWithValue("id", id);
                 cmd.ExecuteNonQuery();              
@@ -463,8 +363,6 @@ namespace GeekHunter
             finally
             {
                 conn.Close();
-
-
             }
 
         }

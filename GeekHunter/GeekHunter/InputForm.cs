@@ -33,22 +33,20 @@ namespace GeekHunter
             InitializeComponent();
 
             List<Skills> listSkills = DB.LoadAllSkills();
-
-            
+          
             //fill the listBox
             foreach (Skills s in listSkills)
             {
                 lstBox1.Items.Add(s);
             }
         }
-
        
         private void add_c(object sender, EventArgs e)
         {
-            ADD();
-            
+            ADD();           
         }
 
+        //Add the skills to Box 2 and remove them from Box 1
         private void ADD()
         {
             int c = lstBox1.Items.Count - 1;
@@ -59,8 +57,7 @@ namespace GeekHunter
                 {
                     lstBox2.Items.Add(lstBox1.Items[i]);
                     lstBox1.Items.RemoveAt(i);
-                }
-                
+                }                
             }
         }
 
@@ -69,6 +66,7 @@ namespace GeekHunter
             REMOVE();
         }
 
+        // Remove skills that has been chose from Box 2
         private void REMOVE()
         {
             int c = lstBox2.Items.Count - 1;
@@ -83,6 +81,7 @@ namespace GeekHunter
             }
         }
 
+        // Clear all the fields
         private void RESET()
         {
             lblId.Text = "";
@@ -92,40 +91,27 @@ namespace GeekHunter
             int c = lstBox2.Items.Count - 1;
 
             for (int i = c; i >= 0; i--)
-            {
-                
+            {            
                     lstBox1.Items.Add(lstBox2.Items[i]);
-                    lstBox2.Items.RemoveAt(i);
-                
+                    lstBox2.Items.RemoveAt(i);                
             }
         }
 
+        // When the input form load
         private void InputForm_Load(object sender, EventArgs e)
         {
-            //List<Skills> listSkills = DB.LoadAllSkills();
-            //for(int i=0; i<listSkills.Count; i++)
-            //{
-            //    lstBox1.Items.Add(listSkills[i].Name);
-            //}
-     
             if(this.iMyId != 0)
             {
                 lblId.Text = this.iMyId.ToString();
 
                 c = DB.GetOneCandidate(iMyId);
 
-
                 editFirstName.Text = c.FirstName;
                 editLastName.Text = c.LastName;
-
-                // Load skillId
-                //List<Candidate> listCandidate
 
                 List<Skills> lstSkill = new List<Skills>();
                     lstSkill = DB.GetOneCandidateSkill(iMyId);
 
-
-                //int sid = skills.Id;
                 c = new Candidate();
                 c.FirstName = editFirstName.Text;
                 c.LastName = editLastName.Text;
@@ -136,9 +122,7 @@ namespace GeekHunter
                     Skills skillSelected = (Skills)lstBox1.Items[i];
 
                     c.SkillIds.Add(skillSelected.Id);
-
                 }
-
 
                 for (int i = 0; i < lstSkill.Count(); i++)
                 {
@@ -151,7 +135,6 @@ namespace GeekHunter
                         }
                     }
                 }
-
                 ADD();
             }
 
@@ -167,6 +150,7 @@ namespace GeekHunter
 
         }
 
+        // When click Save button
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (editFirstName.Text.Trim() == "")
@@ -215,8 +199,7 @@ namespace GeekHunter
                     DB db = new DB();
                     c.Id = Int32.Parse(lblId.Text);
                     db.updateCandidate_Skill(c.Id, c.FirstName, c.LastName, c.SkillIds);
-                    //lblId.Text = id.ToString();
-                    MessageBox.Show("Saved successfully.");
+                    MessageBox.Show("Updated successfully.");
                 }
             }    
         }
@@ -228,7 +211,6 @@ namespace GeekHunter
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            //this.Close();
             // This hides the form, and causes ShowDialog() to return in your Form1
             this.DialogResult = DialogResult.OK;
         }
