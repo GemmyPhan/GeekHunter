@@ -1,9 +1,8 @@
 # GeekHunter
 Geek Registration System
-GeekHunter project from Gemmy Phan has been done.
-I 
+GeekHunter project from Gemmy Phan has been done. 
 Using GRS a recruitment agent should be able to:
-- Register a new candidate:
+--- Register a new candidate:
 + First name / Last name
 + Select technologies candidate has experience in from the predefined list
 - View all candidates
@@ -11,32 +10,31 @@ Using GRS a recruitment agent should be able to:
 - Delete candidates.
 - Update candidates.
 
-* To run the WPF application -
+--- To run the WPF application -
 +	navigate to C:\Users\user\source\repos\GeekHunter\GeekHunter\GeekHunter\bin\Debug
 +	execute GeekHunterUI.exe
++ SearchForm will be opened.
 
-SearchForm will be opened.
-
-* To register a new candidate:
+--- To register a new candidate:
 +	Click Create New button in the SearchForm
 + An InputForm  will pop up.
 +	Enter a first name and last name
 + Click Add (>>) button or Remove (<<) button to choose one or more skill from list Box Skill to Selected Skill
 +	Click Save
 
-* To retrieve all candidates
+--- To retrieve all candidates
 + Click back button to return SearchForm
 +	Click Search button (Selected skill box left blank)
 
-* To retrieve candidates that match one or more skills
+--- To retrieve candidates that match one or more skills
 + Click Add (>>) button or Remove (<<) button to choose one or more skill from list Box Skill to Selected Skill
 +	Click Search
 
-* To delete candidates
+--- To delete candidates
 + Select a candidate in the bottom List View Box that you want to delete.
 +	Click Delete button.
 
-* To update candidates
+--- To update candidates
 +	Click Update button in the SearchForm
 + An InputForm  will pop up.
 +	Enter a new first name or/and last name
@@ -45,5 +43,5 @@ SearchForm will be opened.
 +	Click Save
 
 
-* Technologies:
+--- Technologies:
 +	This appliocation was made by using C# (Windows Form) and SQLite
