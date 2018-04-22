@@ -44,4 +44,4 @@ Using GRS a recruitment agent should be able to:
 
 
 --- Technologies:
-+	This appliocation was made by using C# (Windows Form) and SQLite
++	This appliocation was made by using C# WPF (Visual Studio 2015) and SQLite
