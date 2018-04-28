@@ -13,7 +13,7 @@ namespace GeekHunter
     class DB
     {
         // Data source address
-        static string connectionString = @"Data Source = C:\Users\user\source\repos\GeekHunter\GeekHunter\GeekHunter\GeekHunter.sqlite;Version=3;";
+        static string connectionString = @"Data Source = C:\Users\flash\Source\repos\GeekHunter\GeekHunter\GeekHunter\GeekHunter.sqlite;Version=3;";
 
         // Load all the Candidates with Id, FirstName & LastName from Candidate table
         public static List<Candidate> LoadAllCandidates()
@@ -269,15 +269,25 @@ namespace GeekHunter
                         sCondition = sCondition + skillIds[i].ToString() + ",";
                     }
                 }
-              
+
+                //string sql = "SELECT c.Id, c.FirstName, c.LastName, s.Name " +
+                //     "FROM (SELECT LST1.CandidateId FROM (SELECT COUNT(*) CNT, cs1.CandidateId FROM Candidate_Skill cs1 " +
+                //        "WHERE cs1.SkillId IN (" + sCondition + ") " +
+                //        "GROUP BY cs1.CandidateId) LST1 " +
+                //         "WHERE LST1.CNT = " + iSkillCount +
+                //        ") LST INNER JOIN " +
+                //        "Candidate c ON LST.CandidateId = c.Id INNER JOIN Candidate_Skill cs ON c.id = cs.CandidateId INNER JOIN Skill s ON s.Id = cs.SkillId ORDER BY c.id ASC; ";
+
                 string sql = "SELECT c.Id, c.FirstName, c.LastName, s.Name " +
                      "FROM (SELECT LST1.CandidateId FROM (SELECT COUNT(*) CNT, cs1.CandidateId FROM Candidate_Skill cs1 " +
                         "WHERE cs1.SkillId IN (" + sCondition + ") " +
                         "GROUP BY cs1.CandidateId) LST1 " +
                          "WHERE LST1.CNT = " + iSkillCount +
                         ") LST INNER JOIN " +
-                        "Candidate c ON LST.CandidateId = c.Id INNER JOIN Candidate_Skill cs ON c.id = cs.CandidateId INNER JOIN Skill s ON s.Id = cs.SkillId ORDER BY c.id ASC; ";
-               
+                        "Candidate c ON LST.CandidateId = c.Id INNER JOIN Candidate_Skill cs ON c.id = cs.CandidateId INNER JOIN Skill s ON s.Id = cs.SkillId " +
+                        "WHERE cs.SkillId IN (" + sCondition + ") " +
+                        "ORDER BY c.id ASC; ";
+
                 SQLiteCommand cmd = new SQLiteCommand(sql, conn);
                 SQLiteDataReader reader = cmd.ExecuteReader();
                 int id;
