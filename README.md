@@ -10,7 +10,7 @@ Using GRS a recruitment agent should be able to:
 - Delete candidates.
 - Update candidates.
 
---- To run the WPF application -
+--- To run the application -
 +	navigate to C:\Users\user\source\repos\GeekHunter\GeekHunter\GeekHunter\bin\Debug
 +	execute GeekHunterUI.exe
 + SearchForm will be opened.
